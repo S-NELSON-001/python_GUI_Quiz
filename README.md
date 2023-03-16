@@ -1,6 +1,6 @@
 # python_quiz
-It is GUI based application developed by python TKINTER module
-This Application is helpful to conduct QUIZ to the Students or Others
+It is GUI based application developed by python TKINTER module.
+This Application is helpful to conduct QUIZ to the Students or Others.
 
 Admin's Page
 

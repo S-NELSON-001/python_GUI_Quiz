@@ -1,7 +1,11 @@
 #1.Creating Quiz Application
 from tkinter import*
 from tkinter import ttk
+import tkinter.font as font
 from tkinter import messagebox
+import time
+hour=14
+minute=50
 data = {}
 data_with_roll={}
 s1_file=open("Score.txt","r")
@@ -11,9 +15,12 @@ p_file=open("Quiz_password.txt","r")
 a=file.read()
 b=p_file.read()
 e=s1_file.read()
+timer_hour=0
+timer_minute=1-1
+timer_ss=10-1
 def dashboard():
-    Pass_dict={}
     d_board=Tk()
+    Pass_dict = {}
     w = 1000
     h = 500
     sw = d_board.winfo_screenwidth()
@@ -47,9 +54,6 @@ def dashboard():
         tree.heading("#2", text="Name")
         tree.column("#3", anchor=CENTER)
         tree.heading("#3", text="Score")
-        # verscroll=ttk.Scrollbar(scoredisp,orient="vertical",command=tree.yview)
-        # verscroll.pack(side='right',fill='x')
-        # tree.configure(xscrollcommand=verscroll.set)
         pass_key = list(Pass_dict.keys())
         pass_value = list(Pass_dict.values())
         for i in range(len(pass_value)):
@@ -95,7 +99,6 @@ admin_login={"abcd":"python"}
 #New_Registration
 def N_reg():
     new= Tk()
-    #new.configure(bg="light grey")
     w = 1000
     h = 500
     sw = new.winfo_screenwidth()
@@ -148,7 +151,6 @@ def N_reg():
 #Admin first_page
 def A_F():
     admin_first = Tk()
-    #admin_first.configure()
     w = 1000
     h = 500
     sw = admin_first.winfo_screenwidth()
@@ -174,7 +176,6 @@ question = 1
 #instruction
 def instr():
     ins=Tk()
-    #ins.configure(bg="light green")
     w = 1000
     h = 500
     sw = ins.winfo_screenwidth()
@@ -184,7 +185,7 @@ def instr():
     ins.geometry("%dx%d+%d+%d" % (w, h, x, y))
     ins.title("Admin")
     ins.resizable(False, False)
-    label=Label(ins,text="INSTRUCTIONS:\n1.All question must be attended\n2.Only 90 Minutes time alloted\n3.If you want to continue click'START' \nelse click 'LEAVE'",font=('Helvatical bold', 20),bg="light green")
+    label=Label(ins,text="INSTRUCTIONS:\n1.Each Question carries 2 marks\n2.Only 90 Minutes time alloted\n3.If you want to continue click'START' \nelse click 'LEAVE'",font=('Helvatical bold', 20),bg="light green")
     label.place(x=300,y=180)
     global SCORE
     def leave_page():
@@ -192,6 +193,7 @@ def instr():
     SCORE=0
     def quiz():
         ins.destroy()
+        global timer_ss,timer_hour,timer_minute
         test1 = Tk()
         test1.title("For Testing")
         w = 1000
@@ -210,42 +212,73 @@ def instr():
         SCORE=0
         score=0
         question=1
-        var = StringVar(test1, 0)
+        var = StringVar(test1,0)
+        TIMER = Label(test1, text=str(timer_hour) + ":" + str(timer_minute) + ":" + str(timer_ss), font=("Arial", 20),bg="White")
+        TIMER.place(x=900,y=10)
+        def Time():
+            global timer_ss, timer_minute, timer_hour,question
+            if (timer_hour == 0 and timer_minute == 0 and timer_ss == 0):
+                TIMER.config(text=str(timer_hour) + ":" + str(timer_minute) + ":" + str(timer_ss))
+                question=5
+            elif (timer_minute== 0 and timer_ss == 0):
+                TIMER.config(text=str(timer_hour) + ":" + str(timer_minute) + ":" + str(timer_ss))
+                timer_hour = timer_hour - 1
+                timer_minute = 59
+                timer_ss = 59
+                test1.after(1000, Time)
+            elif (timer_ss == 0):
+                TIMER.config(text=str(timer_hour) + ":" + str(timer_minute) + ":" + str(timer_ss))
+                timer_ss = 59
+                timer_minute = timer_minute - 1
+                test1.after(1000, Time)
+            else:
+                TIMER.config(text=str(timer_hour) + ":" + str(timer_minute) + ":" + str(timer_ss))
+                timer_ss= timer_ss - 1
+                test1.after(1000, Time)
+        test1.after(1000, Time)
         def next():
-            global score
-            global question
-            b = ["1", "4", "2", "2", "4"]
+            global ss,mm,timer_hour,timer_minute,timer_ss
+            global score,question
+            answers= ["1", "4", "2", "2", "4"]
             ans=var.get()
-            if ans == b[question-1]:
-                score += 1
+            Font = font.Font(family="Castellar")
             for widgets in test1.winfo_children():
-                widgets.destroy()
+                if(widgets!=topic and widgets!=TIMER):
+                        widgets.destroy()
             if question < 5:
+                menu_bar = Menu(test1)
+                menu_bar.add_command(label="Home", command=instr)
+                test1.configure(menu=menu_bar)
+                if ans == answers[question - 1]:
+                    score += 2
                 for i in range(1):
-                    menu_bar = Menu(test1)
-                    menu_bar.add_command(label="Home",command=instr)
-                    test1.configure(menu=menu_bar)
-                    topic = Label(test1, text="Python Quiz", fg="Black", bg="White", font=("Ariel", 30))
-                    topic.pack(fill=X)
                     for j in range(1):
-                        a = ttk.Label(test1, text=file.readline())
+                        a = ttk.Label(test1, text=file.readline(),font=("Castellar",20,"bold"))
                         a.pack()
-                        b = ttk.Radiobutton(test1, text=file.readline(), variable=var, value=1)
+                        b = Radiobutton(test1, text=file.readline(), variable=var, value=1)
+                        b['font']=Font
                         b.pack()
-                        c = ttk.Radiobutton(test1, text=file.readline(), variable=var, value=2)
+                        c = Radiobutton(test1, text=file.readline(), variable=var, value=2)
+                        c['font'] = Font
                         c.pack()
-                        d = ttk.Radiobutton(test1, text=file.readline(), variable=var, value=3)
+                        d = Radiobutton(test1, text=file.readline(), variable=var, value=3)
+                        d['font'] = Font
                         d.pack()
-                        e = ttk.Radiobutton(test1, text=file.readline(), variable=var, value=4)
+                        e =Radiobutton(test1, text=file.readline(), variable=var, value=4)
+                        e['font'] = Font
                         e.pack()
                     nxt_que = ttk.Button(test1, text="NEXT", command=next)
                     nxt_que.pack()
                     question += 1
             else:
                 def close_t():
+                    TIMER.destroy()
                     test1.destroy()
-                c=ttk.Button(test1,text= "Back to home page",command=close_t)
-                c.place(x=450,y=200)
+                c2=ttk.Button(test1,text= "Back to home page",command=close_t)
+                c2.place(x=450,y=200)
+                if(timer_hour==0 and timer_ss==0 and timer_minute==0):
+                    time_out_msg=Label(test1,text="Time Out!!..",fg="Red",font=("Bodoni MT Black", 30))
+                    time_out_msg.pack(anchor=CENTER)
                 inf=Label(test1,text="Your Response were Submitted\nThanks for supporting us!!",font=("Bodoni MT Black", 20),fg="green")
                 inf.pack(anchor=CENTER)
                 global SCORE
@@ -255,20 +288,25 @@ def instr():
                 s_file.write(",")
                 s_file.write(str(score))
                 s_file.write(",")
-                #print(score)
+                #Reset for the next player
                 score=0
                 question=1
+        myFont = font.Font(family="Castellar")
         for i in range(1):
             for j in range(1):
-                a = ttk.Label(test1, text=file.readline())
+                a = ttk.Label(test1, text=file.readline(),font=("Castellar",20,"bold"))
                 a.pack()
-                b = ttk.Radiobutton(test1, text=file.readline(), variable=var, value=1)
+                b = Radiobutton(test1, text=file.readline(), variable=var, value=1)
+                b['font']=myFont
                 b.pack(anchor=CENTER)
-                c = ttk.Radiobutton(test1, text=file.readline(), variable=var, value=2)
+                c = Radiobutton(test1, text=file.readline(), variable=var, value=2)
+                c['font'] = myFont
                 c.pack(anchor=CENTER)
-                d = ttk.Radiobutton(test1, text=file.readline(), variable=var, value=3)
+                d = Radiobutton(test1, text=file.readline(), variable=var, value=3)
+                d['font'] = myFont
                 d.pack(anchor=CENTER)
-                e = ttk.Radiobutton(test1, text=file.readline(), variable=var, value=4)
+                e = Radiobutton(test1, text=file.readline(), variable=var, value=4)
+                e['font'] = myFont
                 e.pack(anchor=CENTER)
             nxt_que = ttk.Button(test1, text="NEXT", command=next)
             nxt_que.pack()
@@ -318,8 +356,8 @@ def Ad_Login():
             messagebox.showerror("404", "Kindly,Fill the password")
             admin.destroy()
         else:
-            messagebox.showerror("Alert", "OOPS!....Username is not found")
-            admin.destroy()
+             messagebox.showerror("Alert", "OOPS!....Username is not found")
+             admin.destroy()
     login=ttk.Button(admin,text="Login",command=submit)
     login.place(x=500,y=300)
     admin.mainloop()
@@ -405,7 +443,6 @@ def student():
         pass1 = pass_word.get()
         if uinput in data.keys():
             if pass1 == data[uinput]:
-                # first_page.destroy()
                 test1.destroy()
                 instr()
             else:
@@ -420,7 +457,14 @@ def student():
         else:
             messagebox.showerror("Alert", "OOPS!....Username is not found")
             test1.destroy()
-    last_line = ttk.Button(test1, text="Login", command=submit)
+    def time_checker():
+        hr = time.strftime("%H")
+        mm = time.strftime("%M")
+        if hour == int(hr) and minute == int(mm):
+            submit()
+        else:
+            messagebox.showinfo("Remainder","Be on time!!\nTry again later..")
+    last_line = ttk.Button(test1, text="Login", command=time_checker)
     last_line.place(x=500, y=300)
     test1.mainloop()
 #creating Main  page

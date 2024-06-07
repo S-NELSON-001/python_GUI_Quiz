@@ -33,7 +33,7 @@ The Quiz Application is a Python-based GUI application developed using the Tkint
     - Ensure you have Python installed (preferably Python 3).
     - Install Tkinter if not already installed. Tkinter is usually included with Python, but if not, you can install it via:
     ```bash
-    sudo apt-get install python3-tk
+    sudo apt-get install python3-tk (or) pip install tk
     ```
 
 ## Usage

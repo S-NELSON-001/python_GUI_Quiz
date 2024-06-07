@@ -1,6 +1,57 @@
-# python_quiz
-It is GUI based application developed by python TKINTER module.
-This Application is helpful to conduct QUIZ to the Students or Others.
+---
+
+# Quiz Application
+
+## Table of Contents
+1. [Overview](#overview)
+2. [Features](#features)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [Screenshots](#screenshots)
+
+## Overview
+The Quiz Application is a Python-based GUI application developed using the Tkinter library. This application allows administrators to register new users, monitor quiz scores, and provides a platform for users to take quizzes with a timer. The quiz questions are read from a file and the scores are recorded and displayed for analysis.
+
+## Features
+- **Admin Login**: Secure login for administrators to manage the quiz.
+- **User Registration**: New users can be registered by the admin.
+- **Password Management**: Users can change their passwords for security purposes.
+- **Timed Quiz**: Users can take quizzes that are timed, ensuring a challenging experience.
+- **Scoreboard**: View the scores of all users who have taken the quiz.
+- **Question Management**: Questions are loaded from a text file and presented to the user.
+
+## Installation
+1. **Clone the repository**:
+    ```bash
+    git clone https://github.com/S-NELSON-001/python_GUI_Quiz.git
+    ```
+2. **Navigate to the project directory**:
+    ```bash
+    cd python_GUI_Quiz
+    ```
+3. **Install dependencies**:
+    - Ensure you have Python installed (preferably Python 3).
+    - Install Tkinter if not already installed. Tkinter is usually included with Python, but if not, you can install it via:
+    ```bash
+    sudo apt-get install python3-tk
+    ```
+
+## Usage
+1. **Run the application**:
+    ```bash
+    python GUI.py
+    ```
+2. **Admin Login**:
+    - Use the default admin credentials provided in the script (`username: abcd, password: python`).
+    - Admin can register new users and view the scoreboard.
+3. **User Login**:
+    - Users can log in using their credentials.
+    - Users can change their password if needed.
+    - Users can start the quiz which will be timed and scored     (Hardcoded).
+
+## Screenshots
+
+---
 
 Admin's Page
 

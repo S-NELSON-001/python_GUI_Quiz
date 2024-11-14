@@ -95,7 +95,7 @@ def file():
         file_p.write(",")
     file_u.close()
     file_p.close()
-admin_login={"abcd":"python"}
+admin_login={"Admin":"admin"}
 #New_Registration
 def N_reg():
     new= Tk()
